@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SamaKaya Studio</title>
+<meta name="description" content="SamaKaya Glamour Studio">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --sage: #4A7C59;
+    --deep-sage: #2D5A3D;
+    --coral: #E07A5F;
+    --off-white: #FDF8F5;
+    --warm-gold: #D4A373;
+    --dark: #2C2C2C;
+    --light: #6B6B6B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--off-white);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+  .header {
+    background: var(--deep-sage);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header h1 { font-size: 18px; font-weight: 600; }
+  .header .tokens {
+    background: var(--coral);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .templates-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+  .template-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .template-card:active { transform: scale(0.97); }
+  .template-card .preview {
+    height: 180px;
+    background: var(--deep-sage);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+  }
+  .template-card .info {
+    padding: 10px 12px;
+  }
+  .template-card .info .name {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .template-card .info .counter {
+    font-size: 12px;
+    color: var(--light);
+    margin-top: 2px;
+  }
+  .upload-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(224,122,95,0.4);
+    cursor: pointer;
+    width: calc(100% - 48px);
+    max-width: 320px;
+    transition: transform 0.2s;
+  }
+  .upload-btn:active { transform: translateX(-50%) scale(0.97); }
+  .upload-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .section-title {
+    padding: 16px 16px 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--deep-sage);
+  }
+  .category-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .category-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--sage);
+    background: white;
+    color: var(--sage);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .category-tab.active {
+    background: var(--sage);
+    color: white;
+  }
+  .swaps-left {
+    text-align: center;
+    padding: 8px;
+    font-size: 13px;
+    color: var(--light);
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>👑 SamaKaya Studio</h1>
+    <span class="tokens" id="tokenDisplay">3 swaps left</span>
+  </div>
+
+  <div class="section-title">Choose Your Look</div>
+  <div class="category-tabs" id="categoryTabs">
+    <span class="category-tab active" data-cat="pageant">Pageant</span>
+    <span class="category-tab" data-cat="hijab">Hijab</span>
+    <span class="category-tab" data-cat="beauty">Beauty</span>
+    <span class="category-tab" data-cat="casual">Casual</span>
+  </div>
+
+  <div class="templates-grid" id="templatesGrid">
+    <div class="template-card" data-template="crown">
+      <div class="preview">👑</div>
+      <div class="info">
+        <div class="name">Queen Crown</div>
+        <div class="counter">🔥 Popular</div>
+      </div>
+    </div>
+    <div class="template-card" data-template="evening">
+      <div class="preview">✨</div>
+      <div class="info">
+        <div class="name">Evening Gala</div>
+        <div class="counter">2,341 uses</div>
+      </div>
+    </div>
+    <div class="template-card" data-template="traditional">
+      <div class="preview">🌸</div>
+      <div class="info">
+        <div class="name">Traditional</div>
+        <div class="counter">1,897 uses</div>
+      </div>
+    </div>
+    <div class="template-card" data-template="modern">
+      <div class="preview">💫</div>
+      <div class="info">
+        <div class="name">Modern Chic</div>
+        <div class="counter">1,203 uses</div>
+      </div>
+    </div>
+    <div class="template-card" data-template="beach">
+      <div class="preview">🌺</div>
+      <div class="info">
+        <div class="name">Beach Queen</div>
+        <div class="counter">987 uses</div>
+      </div>
+    </div>
+    <div class="template-card" data-template="sporty">
+      <div class="preview">🏆</div>
+      <div class="info">
+        <div class="name">Sporty Elegance</div>
+        <div class="counter">756 uses</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="swaps-left" id="swapsLeft">3 free swaps remaining today</div>
+
+  <button class="upload-btn" id="uploadBtn">📸 Upload Selfie & Try On</button>
+
+  <script>
+    let swapsUsed = parseInt(localStorage.getItem('studio_swaps_date') === new Date().toISOString().split('T')[0] 
+      ? localStorage.getItem('studio_swaps_used') || '0' : '0');
+    const MAX_FREE_SWAPS = 3;
+
+    function updateSwapsDisplay() {
+      const remaining = Math.max(0, MAX_FREE_SWAPS - swapsUsed);
+      document.getElementById('swapsLeft').textContent = remaining + ' free swaps remaining today';
+      document.getElementById('tokenDisplay').textContent = remaining + ' swaps left';
+      document.getElementById('uploadBtn').disabled = swapsUsed >= MAX_FREE_SWAPS;
+    }
+
+    // Category tabs
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // Template selection
+    let selectedTemplate = null;
+    document.querySelectorAll('.template-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.template-card').forEach(c => c.style.outline = 'none');
+        card.style.outline = '3px solid var(--coral)';
+        card.style.borderRadius = '16px';
+        selectedTemplate = card.dataset.template;
+      });
+    });
+
+    // Upload / Try On
+    document.getElementById('uploadBtn').addEventListener('click', async () => {
+      if (!selectedTemplate) {
+        alert('Please select a template first!');
+        return;
+      }
+      if (swapsUsed >= MAX_FREE_SWAPS) {
+        alert('You\'ve used all your free swaps today. Earn more with SamaKaya tokens!');
+        return;
+      }
+
+      // Trigger camera / file picker
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.capture = 'user';
+      input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Simulate processing
+        document.getElementById('uploadBtn').textContent = '✨ Creating your look...';
+        document.getElementById('uploadBtn').disabled = true;
+
+        // Increment swaps
+        swapsUsed++;
+        localStorage.setItem('studio_swaps_used', swapsUsed.toString());
+        localStorage.setItem('studio_swaps_date', new Date().toISOString().split('T')[0]);
+        updateSwapsDisplay();
+
+        // Simulate API call
+        await new Promise(r => setTimeout(r, 2000));
+
+        document.getElementById('uploadBtn').textContent = '✅ Done! Share your look';
+        
+        // Show share options
+        setTimeout(() => {
+          if (confirm('Your look is ready! Share to your sisters?')) {
+            const shareData = {
+              title: 'SamaKaya Studio',
+              text: '👑 Try your crown at SamaKaya Studio!',
+              url: window.location.href,
+            };
+            if (navigator.share) {
+              navigator.share(shareData);
+            } else {
+              alert('Share this app with your sisters! 👑');
+            }
+          }
+          document.getElementById('uploadBtn').textContent = '📸 Upload Selfie & Try On';
+          document.getElementById('uploadBtn').disabled = false;
+        }, 500);
+      };
+      input.click();
+    });
+
+    updateSwapsDisplay();
+  </script>
+</body>
+</html>
