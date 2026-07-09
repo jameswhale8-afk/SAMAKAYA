@@ -1,16 +1,70 @@
-# samakaya
+# KAYA KITA 🥭
 
-A new Flutter project.
+**For overseas workers, by overseas workers.**
 
-## Getting Started
+A free community app for Filipino and Indonesian overseas workers. Everything is free — no subscriptions, no ads.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- 👑 **Pageant Studio** — Turn your selfie into a queen's portrait
+- 💰 **Send Money Home** — Compare Wise, Remitly, and more
+- 🛡️ **Safety Center** — Salary check, scam alerts, emergency contacts
+- 🌍 **Community Groups** — Hiking, cooking, k-drama, sports, prayer
+- 📺 **K-Drama Watchlist** — See what sisters are watching
+- 🙏 **Daily Faith** — Bible verses & prayer times
+- 💪 **Savings Tracker** — Set goals, watch them grow
+- 🌸 **Wellness Calendar** — Cycle tracking & mood logging
+- ⏰ **Medication Reminder** — Never miss your meds
+- 🌤️ **Two-City Clock** — Home + current city time & weather
+- 🎯 **Daily Check-In** — Points, streaks, rewards
+- 🏐 **Sports League** — Volleyball, badminton, hiking
+- 🍳 **Recipe Collection** — Filipino & Indonesian recipes
+- 🚨 **Emergency Help** — Consulate numbers, NGO contacts
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Mobile:** Flutter (iOS + Android)
+- **Backend:** Supabase (PostgreSQL + RLS)
+- **Hosting:** Cloudflare Pages + Workers
+- **Auth:** Phone OTP via Supabase
+- **Analytics:** Sentry
+- **Localization:** English, Tagalog, Bahasa Indonesia
+
+## Build
+
+```bash
+flutter pub get
+flutter run
+```
+
+For Android APK:
+```bash
+flutter build apk --release
+```
+
+## Environment
+
+Create a `.env` file:
+```
+SUPABASE_URL=https://ztrakkilzrjolxgxayzu.supabase.co
+SUPABASE_ANON_KEY=sb_publishable_tH-9cebXQxvcI38XxvbYJg_aq9SZpmn
+```
+
+## Revenue Model
+
+Users never pay. Revenue comes from:
+- **Remittance affiliate commissions** (Wise, Remitly)
+- **Brand partnerships** (Jollibee, telecoms, insurance)
+- **Data dividends** (opt-in, user benefits)
+
+## Brand
+
+- **Name:** KAYA KITA / KayaKita
+- **Tagline:** For overseas workers, by overseas workers
+- **Mascot:** A mango character — mango yellow body, hot pink summer neck scarf, turquoise eyes
+- **Colors:** Golden Amber, Electric Magenta, Vivid Turquoise
+- **Markets:** Hong Kong, Macao, Singapore, Taiwan, UAE, Saudi Arabia
+
+## Contact
+
+hello@kayakita.com
