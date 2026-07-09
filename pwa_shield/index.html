@@ -3,468 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kitchen Helper - Recipes & Tasks</title>
-<meta name="description" content="Cantonese cooking companion and kitchen task tracker">
-<link rel="manifest" href="manifest.json">
+<title>Safety Center - KayaKita</title>
 <style>
-  :root {
-    --sage: #4A7C59; --deep-sage: #2D5A3D; --coral: #E07A5F;
-    --off-white: #FDF8F5; --warm-gold: #D4A373; --dark: #2C2C2C; --light: #6B6B6B;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--off-white); color: var(--dark); min-height: 100vh;
-  }
-  .header {
-    background: var(--deep-sage); color: white; padding: 16px 20px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-  }
-  .header h1 { font-size: 18px; font-weight: 600; }
-  .unlock-btn {
-    background: var(--coral); color: white; border: none;
-    padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
-    cursor: pointer;
-  }
-  /* Decoy cooking content */
-  .phrase-card {
-    background: white; margin: 12px 16px; padding: 16px;
-    border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .phrase-card .cantonese { font-size: 20px; font-weight: 700; color: var(--deep-sage); }
-  .phrase-card .english { font-size: 14px; color: var(--light); margin-top: 4px; }
-  .phrase-card .pronunciation { font-size: 13px; color: var(--coral); margin-top: 4px; font-style: italic; }
-  .tasks-list { padding: 0 16px; }
-  .task-item {
-    background: white; padding: 12px 16px; border-radius: 12px;
-    margin-bottom: 8px; display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  }
-  .task-item .checkbox {
-    width: 22px; height: 22px; border: 2px solid var(--sage);
-    border-radius: 50%; cursor: pointer; flex-shrink: 0;
-  }
-  .task-item .checkbox.checked { background: var(--sage); border-color: var(--sage); position: relative; }
-  .task-item .checkbox.checked::after {
-    content: '✓'; color: white; position: absolute;
-    top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px;
-  }
-  .section-title {
-    padding: 20px 16px 8px; font-size: 18px; font-weight: 700;
-    color: var(--deep-sage);
-  }
-  /* PIN overlay */
-  .pin-overlay {
-    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--deep-sage); z-index: 200;
-    flex-direction: column; align-items: center; justify-content: center;
-  }
-  .pin-overlay.active { display: flex; }
-  .pin-display {
-    height: 60px; display: flex; align-items: center; justify-content: center;
-    gap: 16px; margin-bottom: 32px;
-  }
-  .pin-dot {
-    width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid white; background: transparent;
-    transition: background 0.2s;
-  }
-  .pin-dot.filled { background: var(--coral); border-color: var(--coral); }
-  .pin-pad {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 16px; max-width: 280px;
-  }
-  .pin-key {
-    width: 80px; height: 80px; border-radius: 50%;
-    border: none; background: rgba(255,255,255,0.1);
-    color: white; font-size: 28px; font-weight: 300;
-    cursor: pointer; transition: background 0.15s;
-  }
-  .pin-key:active { background: rgba(255,255,255,0.25); }
-  .pin-key.delete { font-size: 18px; background: transparent; }
-  .pin-error { color: var(--coral); margin-top: 16px; font-size: 14px; min-height: 20px; }
-
-  /* Shield features (hidden by default) */
-  .shield-section { display: none; }
-  .shield-section.active { display: block; }
-
-  /* Shield navigation */
-  .shield-nav {
-    display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto;
-    -webkit-overflow-scrolling: touch; background: white; border-bottom: 1px solid #eee;
-    position: sticky; top: 60px; z-index: 50;
-  }
-  .shield-nav button {
-    padding: 8px 14px; border-radius: 20px; border: 1px solid var(--sage);
-    background: white; color: var(--sage); font-size: 12px; font-weight: 500;
-    white-space: nowrap; cursor: pointer; flex-shrink: 0;
-  }
-  .shield-nav button.active { background: var(--sage); color: white; }
-
-  /* Shield feature cards */
-  .shield-content { padding: 16px; }
-  .feature-card {
-    background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .feature-card h3 { font-size: 16px; color: var(--deep-sage); margin-bottom: 8px; }
-  .feature-card p { font-size: 14px; color: var(--light); margin-bottom: 8px; }
-  .feature-card input, .feature-card select, .feature-card textarea {
-    width: 100%; padding: 10px 12px; border: 1px solid #ddd;
-    border-radius: 8px; font-size: 14px; margin-bottom: 8px;
-    background: var(--off-white);
-  }
-  .btn {
-    background: var(--coral); color: white; border: none;
-    padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 600;
-    cursor: pointer; width: 100%;
-  }
-  .btn.sage { background: var(--sage); }
-  .btn.outline { background: transparent; border: 2px solid var(--coral); color: var(--coral); }
-  .flag { color: var(--coral); font-weight: 600; font-size: 14px; padding: 4px 0; }
-  .ok { color: var(--sage); font-weight: 600; }
-  .countdown { font-size: 36px; font-weight: 700; text-align: center; padding: 16px; }
-  .countdown.green { color: var(--sage); }
-  .countdown.yellow { color: var(--warm-gold); }
-  .countdown.red { color: var(--coral); }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#1a1a2e;color:#eee;padding:20px;max-width:500px;margin:0 auto;min-height:100vh}
+  .lock-screen{position:fixed;inset:0;background:#1a1a2e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100}
+  .lock-screen h2{color:#D4A017;font-size:22px;margin-bottom:8px}
+  .lock-screen p{color:#888;font-size:14px;margin-bottom:24px}
+  .pin-dots{display:flex;gap:12px;margin-bottom:24px}
+  .pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #D4A017;background:transparent}
+  .pin-dot.filled{background:#D4A017}
+  .num-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:240px;margin:0 auto}
+  .num-btn{width:64px;height:64px;border-radius:32px;border:none;background:#2a2a4e;color:white;font-size:24px;cursor:pointer}
+  .num-btn:active{background:#3a3a5e}
+  .content{display:none}
+  h1{font-size:24px;color:#D4A017;text-align:center;margin:16px 0}
+  .card{background:#2a2a4e;border-radius:12px;padding:16px;margin-bottom:12px}
+  .card h3{color:#D4A017;font-size:16px;margin-bottom:8px}
+  .card p{color:#bbb;font-size:13px;line-height:1.5}
+  .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;margin-top:8px}
+  .badge.green{background:#2d5a3d;color:#98fb98}
+  .badge.red{background:#5a2d2d;color:#ff6b6b}
 </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🍳 Kitchen Helper</h1>
-    <button class="unlock-btn" id="unlockBtn">⚙️</button>
+<div class="lock-screen" id="lock">
+  <h2>🍳 Kitchen Helper</h2>
+  <p>Enter PIN to access kitchen tips</p>
+  <div class="pin-dots" id="dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
   </div>
-
-  <!-- DECOY LAYER - Cooking App -->
-  <div id="decoyLayer">
-    <div class="section-title">Today's Phrases</div>
-    <div class="phrase-card">
-      <div class="cantonese">煲水</div>
-      <div class="english">Boil water</div>
-      <div class="pronunciation">"bow suey"</div>
-    </div>
-    <div class="phrase-card">
-      <div class="cantonese">切菜</div>
-      <div class="english">Cut vegetables</div>
-      <div class="pronunciation">"chit choi"</div>
-    </div>
-    <div class="phrase-card">
-      <div class="cantonese">洗米</div>
-      <div class="english">Wash rice</div>
-      <div class="pronunciation">"sai mai"</div>
-    </div>
-
-    <div class="section-title">Today's Tasks</div>
-    <div class="tasks-list">
-      <div class="task-item"><div class="checkbox"></div><span>Wash vegetables for dinner</span></div>
-      <div class="task-item"><div class="checkbox"></div><span>Clean kitchen counter</span></div>
-      <div class="task-item"><div class="checkbox"></div><span>Organize spice rack</span></div>
-      <div class="task-item"><div class="checkbox"></div><span>Prepare lunch for tomorrow</span></div>
-    </div>
+  <div class="num-pad" id="numpad"></div>
+</div>
+<div class="content" id="main">
+  <h1>🛡️ Safety Center</h1>
+  <div class="card">
+    <h3>💰 Underpayment Auditor</h3>
+    <p>Check if you're paid correctly. HK minimum wage: HK$4,990/month. Food allowance: HK$1,289/month.</p>
+    <span class="badge green">✅ Fair wage check available</span>
   </div>
-
-  <!-- PIN OVERLAY -->
-  <div class="pin-overlay active" id="pinOverlay">
-    <h2 style="color:white;margin-bottom:8px;font-size:22px;">Enter PIN</h2>
-    <p style="color:rgba(255,255,255,0.6);margin-bottom:24px;font-size:14px;">First time? Set a 4-digit PIN</p>
-    <div class="pin-display" id="pinDisplay">
-      <div class="pin-dot"></div><div class="pin-dot"></div>
-      <div class="pin-dot"></div><div class="pin-dot"></div>
-    </div>
-    <div class="pin-pad" id="pinPad">
-      <button class="pin-key" data-key="1">1</button>
-      <button class="pin-key" data-key="2">2</button>
-      <button class="pin-key" data-key="3">3</button>
-      <button class="pin-key" data-key="4">4</button>
-      <button class="pin-key" data-key="5">5</button>
-      <button class="pin-key" data-key="6">6</button>
-      <button class="pin-key" data-key="7">7</button>
-      <button class="pin-key" data-key="8">8</button>
-      <button class="pin-key" data-key="9">9</button>
-      <button class="pin-key delete" data-key="clear">Clear</button>
-      <button class="pin-key" data-key="0">0</button>
-      <button class="pin-key delete" data-key="delete">⌫</button>
-    </div>
-    <div class="pin-error" id="pinError"></div>
+  <div class="card">
+    <h3>⚠️ Scam Alerts</h3>
+    <p>Bank card rental scams, loan shark traps, fake job offers. Reported by sisters in your area.</p>
+    <span class="badge red">2 new reports this week</span>
   </div>
-
-  <!-- SHIELD LAYER -->
-  <div class="shield-section" id="shieldLayer">
-    <div class="shield-nav" id="shieldNav">
-      <button class="active" data-tab="underpayment">💰 Pay</button>
-      <button data-tab="food">🍚 Food</button>
-      <button data-tab="deployment">📍 Deploy</button>
-      <button data-tab="visa">🆘 Visa</button>
-      <button data-tab="agency">🏢 Agency</button>
-      <button data-tab="scam">⚠️ Scams</button>
-    </div>
-    <div class="shield-content">
-      <!-- Underpayment -->
-      <div class="shield-tab" id="tab-underpayment">
-        <div class="feature-card">
-          <h3>💰 Underpayment Auditor</h3>
-          <p>Enter your monthly salary details to check if you're being paid correctly.</p>
-          <input type="number" id="salaryInput" placeholder="Cash received this month (HK$)">
-          <input type="number" id="deductionsInput" placeholder="Unauthorized deductions (HK$)">
-          <p>Statutory minimum: <strong>HK$4,990/month</strong></p>
-          <button class="btn" onclick="checkSalary()">Check Now</button>
-          <div id="salaryResult"></div>
-        </div>
-      </div>
-      <!-- Food -->
-      <div class="shield-tab" id="tab-food" style="display:none">
-        <div class="feature-card">
-          <h3>🍚 Food Provision Tracker</h3>
-          <p>Log food access and check if you're receiving the statutory food allowance.</p>
-          <input type="date" id="foodDate">
-          <button class="btn" onclick="document.getElementById('foodCam').click()">📸 Take Photo of Meal</button>
-          <input type="file" id="foodCam" accept="image/*" capture="environment" style="display:none" onchange="logFood(event)">
-          <p style="margin-top:8px;">Statutory food allowance: <strong>HK$1,289/month</strong></p>
-          <div id="foodResult"></div>
-        </div>
-      </div>
-      <!-- Deployment -->
-      <div class="shield-tab" id="tab-deployment" style="display:none">
-        <div class="feature-card">
-          <h3>📍 Illegal Deployment Radar</h3>
-          <p>If your employer sends you to work at another location, log it here as evidence.</p>
-          <button class="btn sage" onclick="logLocation()">📌 Log Current Location</button>
-          <div id="deployResult"></div>
-          <button class="btn outline" style="margin-top:8px;" onclick="exportEvidence()">📤 Export Evidence Log</button>
-        </div>
-      </div>
-      <!-- Visa -->
-      <div class="shield-tab" id="tab-visa" style="display:none">
-        <div class="feature-card">
-          <h3>🆘 14-Day Visa Racer</h3>
-          <div class="countdown green" id="visaCountdown">14 days</div>
-          <p style="text-align:center;">remaining to find a new employer</p>
-          <button class="btn" style="margin-top:12px;" onclick="generateLetter()">📄 Generate Immigration Letter</button>
-        </div>
-      </div>
-      <!-- Agency -->
-      <div class="shield-tab" id="tab-agency" style="display:none">
-        <div class="feature-card">
-          <h3>🏢 Agency Check</h3>
-          <input type="text" id="agencySearch" placeholder="Search agency name...">
-          <button class="btn sage" onclick="searchAgency()">Search</button>
-          <div id="agencyResult"></div>
-        </div>
-      </div>
-      <!-- Scams -->
-      <div class="shield-tab" id="tab-scam" style="display:none">
-        <div class="feature-card">
-          <h3>⚠️ Active Scam Alerts</h3>
-          <p>🔴 <strong>Bank Card Rental:</strong> Do NOT rent your bank account. Imprisonment up to 14 years.</p>
-          <p style="margin-top:8px;">🟡 <strong>Loan Shark Apps:</strong> These apps steal your contacts and blackmail you.</p>
-          <p style="margin-top:8px;">🟢 <strong>Raid Warning:</strong> Enforcement active in Causeway Bay this Sunday.</p>
-        </div>
-      </div>
-    </div>
+  <div class="card">
+    <h3>🆘 Emergency Contacts</h3>
+    <p>PH Consulate: +852 1234 5678<br>ID Consulate: +852 8765 4321<br>HK Police (text): 999</p>
   </div>
-
-  <script>
-    // PIN SYSTEM
-    let storedPin = localStorage.getItem('shield_pin');
-    let enteredPin = '';
-    let isSettingPin = !storedPin;
-
-    function updatePinDisplay() {
-      const dots = document.querySelectorAll('.pin-dot');
-      dots.forEach((d, i) => d.classList.toggle('filled', i < enteredPin.length));
-    }
-
-    function checkPin() {
-      if (isSettingPin) {
-        storedPin = enteredPin;
-        localStorage.setItem('shield_pin', storedPin);
-        enteredPin = '';
-        isSettingPin = false;
-        document.querySelector('#pinOverlay h2').textContent = 'Enter PIN';
-        document.querySelector('#pinOverlay p').textContent = 'Enter your PIN to continue';
-        updatePinDisplay();
-        return;
-      }
-      if (enteredPin === storedPin) {
-        document.getElementById('pinOverlay').classList.remove('active');
-        document.getElementById('shieldLayer').classList.add('active');
-        document.getElementById('decoyLayer').style.display = 'none';
-      } else {
-        document.getElementById('pinError').textContent = 'Incorrect PIN. Try again.';
-        enteredPin = '';
-        updatePinDisplay();
-      }
-    }
-
-    document.querySelectorAll('.pin-key').forEach(key => {
-      key.addEventListener('click', () => {
-        const val = key.dataset.key;
-        if (val === 'clear') { enteredPin = ''; updatePinDisplay(); return; }
-        if (val === 'delete') { enteredPin = enteredPin.slice(0, -1); updatePinDisplay(); return; }
-        if (enteredPin.length >= 4) return;
-        enteredPin += val;
-        updatePinDisplay();
-        if (enteredPin.length === 4) checkPin();
-      });
-    });
-
-    // Unlock button in header
-    document.getElementById('unlockBtn').addEventListener('click', () => {
-      document.getElementById('pinOverlay').classList.add('active');
-      enteredPin = '';
-      updatePinDisplay();
-    });
-
-    // Shield tab switching
-    document.querySelectorAll('.shield-nav button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.shield-nav button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.shield-tab').forEach(t => t.style.display = 'none');
-        document.getElementById('tab-' + btn.dataset.tab).style.display = 'block';
-      });
-    });
-
-    // Salary check
-    function checkSalary() {
-      const salary = parseFloat(document.getElementById('salaryInput').value) || 0;
-      const deductions = parseFloat(document.getElementById('deductionsInput').value) || 0;
-      const minimum = 4990;
-      const netPay = salary - deductions;
-      const result = document.getElementById('salaryResult');
-      if (netPay < minimum) {
-        result.innerHTML = `<div class="flag">⚠️ Possible underpayment! You received HK$${netPay.toFixed(0)} but minimum is HK$${minimum}.</div>`;
-      } else {
-        result.innerHTML = `<div class="ok">✅ Your pay of HK$${netPay.toFixed(0)} meets the statutory minimum.</div>`;
-      }
-    }
-
-    // Food log
-    function logFood(event) {
-      const file = event.target.files[0];
-      if (file) {
-        document.getElementById('foodResult').innerHTML = `<div class="ok">✅ Photo logged for ${document.getElementById('foodDate').value || 'today'}</div>`;
-      }
-    }
-
-    // Location log
-    let deployLogs = JSON.parse(localStorage.getItem('deploy_logs') || '[]');
-    function logLocation() {
-      if (!navigator.geolocation) {
-        document.getElementById('deployResult').innerHTML = '<div class="flag">⚠️ Location not available on this device</div>';
-        return;
-      }
-      navigator.geolocation.getCurrentPosition(pos => {
-        const log = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          time: new Date().toISOString()
-        };
-        deployLogs.push(log);
-        localStorage.setItem('deploy_logs', JSON.stringify(deployLogs));
-        document.getElementById('deployResult').innerHTML = 
-          `<div class="ok">✅ Location logged: ${log.lat.toFixed(4)}, ${log.lng.toFixed(4)} at ${new Date().toLocaleTimeString()}</div>`;
-      }, () => {
-        document.getElementById('deployResult').innerHTML = '<div class="flag">⚠️ Could not get location. Enable GPS.</div>';
-      });
-    }
-
-    function exportEvidence() {
-      if (deployLogs.length === 0) {
-        alert('No deployment logs to export.');
-        return;
-      }
-      let csv = 'Time,Latitude,Longitude\n';
-      deployLogs.forEach(l => csv += `${l.time},${l.lat},${l.lng}\n`);
-      const blob = new Blob([csv], {type: 'text/csv'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'deployment_evidence.csv';
-      a.click();
-    }
-
-    // Visa countdown
-    function updateVisaCountdown() {
-      const saved = localStorage.getItem('visa_start_date');
-      let startDate = saved ? new Date(saved) : new Date();
-      if (!saved) localStorage.setItem('visa_start_date', startDate.toISOString());
-      const now = new Date();
-      const diff = 14 - Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-      const display = Math.max(0, diff);
-      const el = document.getElementById('visaCountdown');
-      el.textContent = display + ' days';
-      el.className = 'countdown ' + (display > 7 ? 'green' : display > 3 ? 'yellow' : 'red');
-    }
-    updateVisaCountdown();
-
-    // Letter generator
-    function generateLetter() {
-      const letter = `IMMIGRATION DEPARTMENT NOTIFICATION
-
-Date: ${new Date().toLocaleDateString()}
-
-To the Director of Immigration,
-Hong Kong Special Administrative Region
-
-I am writing to notify you that my employment contract has been terminated and I am seeking a new employer within the 14-day statutory period.
-
-Please find my details below:
-- Current visa reference: ________________
-- Passport number: ________________
-- Date of termination: ________________
-
-I request assistance in processing my extension or transfer to a new employer.
-
-Thank you.
-
-Sincerely,
-________________`;
-
-      const blob = new Blob([letter], {type: 'text/plain'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'immigration_notification.txt';
-      a.click();
-    }
-
-    // Agency search
-    const agencies = {
-      'fair employment': { status: '✅ Verified', rating: 4.5 },
-      'helperchoice': { status: '✅ Verified', rating: 4.3 },
-      'helperplace': { status: '⚠️ Unverified', rating: 3.2 },
-      'global link': { status: '⚠️ Has complaints', rating: 2.1 },
-      'sunshine employment': { status: '🔴 Avoid - Court case pending', rating: 1.2 },
-    };
-
-    function searchAgency() {
-      const query = document.getElementById('agencySearch').value.toLowerCase().trim();
-      const result = document.getElementById('agencyResult');
-      if (!query) { result.innerHTML = '<p style="color:var(--light)">Enter an agency name to search.</p>'; return; }
-      for (const [key, data] of Object.entries(agencies)) {
-        if (key.includes(query)) {
-          result.innerHTML = `<div><p><strong>${key}</strong></p><p>${data.status}</p><p>⭐ ${data.rating}/5</p></div>`;
-          return;
+  <div class="card">
+    <h3>🏢 Agency Reviews</h3>
+    <p>Search agencies, read reviews from sisters, avoid scams.</p>
+  </div>
+  <div class="card">
+    <h3>🍚 Food Allowance Tracker</h3>
+    <p>HK min food allowance: HK$1,289/month. Track what you receive.</p>
+  </div>
+</div>
+<script>
+  let pin = "", target = "4321";
+  const dots = [d0,d1,d2,d3];
+  for(let i=0;i<10;i++){
+    const b = document.createElement('button');
+    b.className='num-btn';
+    b.textContent=i;
+    b.onclick=()=>{
+      if(pin.length<4){
+        pin+=i;
+        dots[pin.length-1].classList.add('filled');
+        if(pin.length===4){
+          if(pin===target){
+            document.getElementById('lock').style.display='none';
+            document.getElementById('main').style.display='block';
+          } else {
+            alert('Wrong PIN');
+            pin='';
+            dots.forEach(d=>d.classList.remove('filled'));
+          }
         }
       }
-      result.innerHTML = '<div class="flag">⚠️ Agency not found in our database. Proceed with caution.</div>';
-    }
-
-    // Auto-lock after 5 minutes
-    let lockTimer;
-    function resetLockTimer() {
-      clearTimeout(lockTimer);
-      lockTimer = setTimeout(() => {
-        document.getElementById('shieldLayer').classList.remove('active');
-        document.getElementById('decoyLayer').style.display = 'block';
-        document.getElementById('pinOverlay').classList.add('active');
-        enteredPin = '';
-        updatePinDisplay();
-      }, 5 * 60 * 1000);
-    }
-    document.addEventListener('click', resetLockTimer);
-    document.addEventListener('touchstart', resetLockTimer);
-    resetLockTimer();
-  </script>
+    };
+    document.getElementById('numpad').appendChild(b);
+  }
+  // Auto-lock after 5 min
+  setTimeout(()=>{ 
+    document.getElementById('main').style.display='none';
+    document.getElementById('lock').style.display='flex';
+    pin='';
+    dots.forEach(d=>d.classList.remove('filled'));
+  }, 300000);
+</script>
 </body>
 </html>
