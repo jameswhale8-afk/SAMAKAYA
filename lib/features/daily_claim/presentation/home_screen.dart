@@ -558,7 +558,7 @@ class _ProfilePage extends StatelessWidget {
             _settingsItem(Icons.badge, 'My Badges', () {}),
             _settingsItem(Icons.share, 'Referral Link', () {}),
             _settingsItem(Icons.help, 'Help & FAQ', () {}),
-            _settingsItem(Icons.info, 'About SamaKaya', () {}),
+            _settingsItem(Icons.info, 'About KayaKita', () {}),
             const SizedBox(height: 32),
             SizedBox(
               width: double.infinity,

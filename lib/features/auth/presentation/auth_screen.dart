@@ -91,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   child: const Center(
                     child: Text(
-                      'S',
+                      'K',
                       style: TextStyle(
                         color: AppTheme.coral,
                         fontSize: 48,
@@ -102,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'SamaKaya',
+                  'KayaKita',
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,

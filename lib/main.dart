@@ -3,26 +3,25 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/theme.dart';
 import 'features/auth/presentation/auth_screen.dart';
 import 'features/daily_claim/presentation/home_screen.dart';
-import 'routes/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Supabase.initialize(
     url: 'https://ztrakkilzrjolxgxayzu.supabase.co',
     anonKey: 'sb_publishable_tH-9cebXQxvcI38XxvbYJg_aq9SZpmn',
   );
 
-  runApp(const SamaKayaApp());
+  runApp(const KayaKitaApp());
 }
 
-class SamaKayaApp extends StatelessWidget {
-  const SamaKayaApp({super.key});
+class KayaKitaApp extends StatelessWidget {
+  const KayaKitaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sama',
+      title: 'KayaKita',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: const AuthGate(),

@@ -87,7 +87,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
             ),
             const SizedBox(height: 12),
             _stepRow('1', 'Share your code with a friend'),
-            _stepRow('2', 'They download SamaKaya and use your code'),
+            _stepRow('2', 'They download KayaKita and use your code'),
             _stepRow('3', 'You both earn 2,000 tokens each!'),
             const SizedBox(height: 24),
             // Leaderboard preview
