@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../../../core/theme.dart';
+import '../../../core/local_db.dart';
 
 class PrayerDevotionalScreen extends StatefulWidget {
   const PrayerDevotionalScreen({super.key});
@@ -9,102 +12,131 @@ class PrayerDevotionalScreen extends StatefulWidget {
 
 class _PrayerDevotionalScreenState extends State<PrayerDevotionalScreen> {
   bool isMuslim = false;
+  Map<String, dynamic>? _prayerTimes;
+  Map<String, dynamic>? _bibleVerse;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    setState(() => _loading = true);
+    try {
+      // Fetch prayer times (Aladhan API)
+      final prayerRes = await http.get(
+        Uri.parse('https://api.aladhan.com/v1/timingsByCity?city=Hong+Kong&country=HK&method=2'),
+      ).timeout(const Duration(seconds: 5));
+      if (prayerRes.statusCode == 200) {
+        _prayerTimes = jsonDecode(prayerRes.body)['data']['timings'];
+      }
+
+      // Fetch Bible verse (bible-api.com)
+      final bibleRes = await http.get(
+        Uri.parse('https://bible-api.com/?random=1&translation=web'),
+      ).timeout(const Duration(seconds: 5));
+      if (bibleRes.statusCode == 200) {
+        _bibleVerse = jsonDecode(bibleRes.body);
+      }
+    } catch (_) {}
+    setState(() => _loading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Daily Faith"), backgroundColor: const Color(0xFF2D5A3D)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => setState(() => isMuslim = false),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: isMuslim ? Colors.grey[200] : const Color(0xFF2D5A3D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text("✝️ Christian", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => setState(() => isMuslim = true),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: isMuslim ? const Color(0xFF2D5A3D) : Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text("☪️ Muslim", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                ),
-              ],
+      backgroundColor: AppTheme.offWhite,
+      appBar: AppBar(
+        title: const Text('Faith'),
+        backgroundColor: Colors.transparent, elevation: 0,
+        foregroundColor: AppTheme.darkText,
+        actions: [
+          GestureDetector(
+            onTap: () => setState(() => isMuslim = !isMuslim),
+            child: Container(
+              margin: const EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: isMuslim ? AppTheme.sageGreen.withOpacity(0.1) : AppTheme.coral.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(isMuslim ? '🕌' : '⛪', style: const TextStyle(fontSize: 18)),
             ),
-            const SizedBox(height: 24),
-            if (!isMuslim) ...[
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)]),
-                child: Column(
-                  children: [
-                    const Text("📖", style: TextStyle(fontSize: 40)),
-                    const SizedBox(height: 12),
-                    const Text("Verse of the Day", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF2D5A3D))),
-                    const SizedBox(height: 12),
-                    Text("\"I can do all things through Christ who strengthens me.\"", textAlign: TextAlign.center, style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: Colors.grey, height: 1.5)),
-                    const SizedBox(height: 8),
-                    const Text("— Philippians 4:13", style: TextStyle(color: Colors.grey, fontSize: 13)),
-                    const SizedBox(height: 16),
-                    const Text("Pray for your family today. They are proud of you.", style: TextStyle(color: Colors.grey, fontSize: 13)),
-                  ],
-                ),
-              ),
-            ] else ...[
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)]),
-                child: Column(
-                  children: [
-                    const Text("☪️", style: TextStyle(fontSize: 40)),
-                    const SizedBox(height: 12),
-                    const Text("Prayer Times Today", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF2D5A3D))),
-                    const SizedBox(height: 12),
-                    _prayerTime("Fajr", "5:12 AM"),
-                    _prayerTime("Dhuhr", "12:30 PM"),
-                    _prayerTime("Asr", "3:45 PM"),
-                    _prayerTime("Maghrib", "6:10 PM"),
-                    _prayerTime("Isha", "7:30 PM"),
-                    const SizedBox(height: 12),
-                    const Text("Qibla direction: 292° NW", style: TextStyle(color: Colors.grey, fontSize: 13)),
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
+          ),
+        ],
       ),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: _fetchData,
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  if (isMuslim && _prayerTimes != null) ...[
+                    _sectionHeader('Prayer Times — Hong Kong'),
+                    const SizedBox(height: 12),
+                    _prayerCard('Fajr', _prayerTimes!['Fajr'] ?? '--', Icons.wb_twilight),
+                    _prayerCard('Dhuhr', _prayerTimes!['Dhuhr'] ?? '--', Icons.wb_sunny),
+                    _prayerCard('Asr', _prayerTimes!['Asr'] ?? '--', Icons.cloud),
+                    _prayerCard('Maghrib', _prayerTimes!['Maghrib'] ?? '--', Icons.sunset),
+                    _prayerCard('Isha', _prayerTimes!['Isha'] ?? '--', Icons.nights_stay),
+                  ],
+                  if (!isMuslim && _bibleVerse != null) ...[
+                    _sectionHeader('Daily Verse'),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppTheme.coral.withOpacity(0.2)),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text('📖', style: TextStyle(fontSize: 36)),
+                          const SizedBox(height: 16),
+                          Text(
+                            _bibleVerse!['text'] ?? '',
+                            style: TextStyle(fontSize: 16, height: 1.6, color: AppTheme.darkText, fontStyle: FontStyle.italic),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            '— ${_bibleVerse!['reference'] ?? ''}',
+                            style: TextStyle(fontSize: 14, color: AppTheme.warmGold, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 24),
+                  if (_loading == false)
+                    Center(
+                      child: TextButton(
+                        onPressed: _fetchData,
+                        child: Text('Refresh', style: TextStyle(color: AppTheme.lightText, fontSize: 13)),
+                      ),
+                    ),
+                ],
+              ),
+            ),
     );
   }
-  
-  Widget _prayerTime(String name, String time) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(name, style: const TextStyle(fontSize: 14, color: Colors.grey)),
-          Text(time, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-        ],
+
+  Widget _sectionHeader(String text) {
+    return Text(text, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold));
+  }
+
+  Widget _prayerCard(String name, String time, IconData icon) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: Icon(icon, color: AppTheme.sageGreen, size: 22),
+        title: Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
+        trailing: Text(time, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.sageGreen)),
       ),
     );
   }
