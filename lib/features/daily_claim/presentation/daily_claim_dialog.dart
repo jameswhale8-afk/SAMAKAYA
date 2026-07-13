@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
-import '../../core/localization.dart';
+import '../../../../../../../../core/theme.dart';
+import '../../../../../../core/localization.dart';
 
 class DailyClaimDialog extends StatelessWidget {
   final VoidCallback onClaim;

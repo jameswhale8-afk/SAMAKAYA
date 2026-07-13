@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../../../../../core/theme.dart';
 
 class BadgeScreen extends StatelessWidget {
   const BadgeScreen({super.key});
@@ -55,7 +55,7 @@ class BadgeScreen extends StatelessWidget {
             color: unlocked ? const Color(0xFFD4A017).withOpacity(0.1) : Colors.grey[100],
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Center(child: Text(icon, style: TextStyle(fontSize: 24, opacity: unlocked ? 1 : 0.3))),
+          child: Opacity(opacity: unlocked ? 1.0 : 0.3, child: Text(icon, style: const TextStyle(fontSize: 24))),
         ),
         title: Text(name, style: TextStyle(fontWeight: FontWeight.w600, color: unlocked ? Colors.black : Colors.grey)),
         subtitle: Text(desc, style: TextStyle(color: unlocked ? Colors.grey : Colors.grey[300], fontSize: 12)),

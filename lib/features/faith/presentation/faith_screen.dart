@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../core/theme.dart';
 
 class PrayerDevotionalScreen extends StatefulWidget {
   const PrayerDevotionalScreen({super.key});
@@ -30,7 +30,7 @@ class _PrayerDevotionalScreenState extends State<PrayerDevotionalScreen> {
                         color: isMuslim ? Colors.grey[200] : const Color(0xFF2D5A3D),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text("✝️ Christian", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                      child: Text("✝️ Christian", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     ),
                   ),
                 ),
@@ -44,7 +44,7 @@ class _PrayerDevotionalScreenState extends State<PrayerDevotionalScreen> {
                         color: isMuslim ? const Color(0xFF2D5A3D) : Colors.grey[200],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text("☪️ Muslim", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                      child: Text("☪️ Muslim", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ),
@@ -61,7 +61,7 @@ class _PrayerDevotionalScreenState extends State<PrayerDevotionalScreen> {
                     const SizedBox(height: 12),
                     const Text("Verse of the Day", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF2D5A3D))),
                     const SizedBox(height: 12),
-                    const Text("\"I can do all things through Christ who strengthens me.\"", textAlign: TextAlign.center, style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: Colors.grey, height: 1.5)),
+                    Text("\"I can do all things through Christ who strengthens me.\"", textAlign: TextAlign.center, style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: Colors.grey, height: 1.5)),
                     const SizedBox(height: 8),
                     const Text("— Philippians 4:13", style: TextStyle(color: Colors.grey, fontSize: 13)),
                     const SizedBox(height: 16),

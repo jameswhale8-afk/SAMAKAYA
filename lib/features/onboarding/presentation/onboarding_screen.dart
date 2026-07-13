@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../core/theme.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -38,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     children: [
                       Text(pages[i].emoji, style: const TextStyle(fontSize: 80)),
                       const SizedBox(height: 24),
-                      Text(pages[i].title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: pages[i].color), textAlign: TextAlign.center),
+                      Text(pages[i].title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: pages[i].color), textAlign: TextAlign.center),
                       const SizedBox(height: 16),
                       Text(pages[i].desc, style: const TextStyle(color: Colors.grey, fontSize: 15, height: 1.5), textAlign: TextAlign.center),
                     ],

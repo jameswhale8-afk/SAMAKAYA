@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../core/theme.dart';
 
 class FamilyHealthScreen extends StatelessWidget {
   const FamilyHealthScreen({super.key});
@@ -23,7 +23,7 @@ class FamilyHealthScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 const Text("Family Health Records", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF2D5A3D))),
                 const SizedBox(height: 4),
-                const Text("Keep your family's medical info safe and accessible", style: TextStyle(color: Colors.grey, fontSize: 13, textAlign: TextAlign.center)),
+                const Text("Keep your family's medical info safe and accessible", style: TextStyle(color: Colors.grey, fontSize: 13), textAlign: TextAlign.center),
               ],
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../core/theme.dart';
+import '../../../../../../../core/theme.dart';
 
 class RemittanceScreen extends StatelessWidget {
   const RemittanceScreen({super.key});
@@ -49,7 +49,7 @@ class RemittanceScreen extends StatelessWidget {
             _PartnerCard(
               name: 'Wise',
               description: 'Real exchange rate. Low fees. Fast transfer.',
-              fee: 'HK$12',
+              fee: 'HK\$12',
               rate: '1 HKD = 7.12 PHP',
               color: const Color(0xFF00D9B5),
               onTap: () => _launchPartner('https://wise.com/invite/u/jameswhale8'),
@@ -59,7 +59,7 @@ class RemittanceScreen extends StatelessWidget {
             _PartnerCard(
               name: 'Remitly',
               description: 'First transfer free. Promo rates available.',
-              fee: 'HK$8',
+              fee: 'HK\$8',
               rate: '1 HKD = 7.20 PHP',
               color: const Color(0xFF1499DA),
               onTap: () => _launchPartner('https://remitly.com'),
@@ -69,7 +69,7 @@ class RemittanceScreen extends StatelessWidget {
             _PartnerCard(
               name: 'TNG Wallet',
               description: 'Popular with helpers. Cash pickup available.',
-              fee: 'HK$18',
+              fee: 'HK\$18',
               rate: '1 HKD = 7.05 PHP',
               color: const Color(0xFF00A36C),
               onTap: () => _launchPartner('https://tngwallet.com'),
@@ -85,7 +85,7 @@ class RemittanceScreen extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Send HK$4,000 or more and earn 200 bonus tokens automatically',
+                        'Send HK\$4,000 or more and earn 200 bonus tokens automatically',
                         style: TextStyle(fontSize: 13, color: AppTheme.lightText),
                       ),
                     ),

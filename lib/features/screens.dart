@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../../../core/theme.dart';
 
 class TranslationScreen extends StatelessWidget {
   const TranslationScreen({super.key});
@@ -191,17 +191,16 @@ class WishlistScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'We can lock in ONE massive discount this week. Choose your prize:',
-              textAlign: TextAlign.center,
               style: TextStyle(color: AppTheme.lightText),
             ),
             const SizedBox(height: 24),
             _dealCard('📱', 'SmarTone 10GB Data', '40% off', 64, AppTheme.sageGreen),
             const SizedBox(height: 12),
-            _dealCard('💸', 'Remittance Fee Waiver', 'Free send up to HK$5,000', 36, AppTheme.coral),
+            _dealCard('💸', 'Remittance Fee Waiver', 'Free send up to HK\$5,000', 36, AppTheme.coral),
             const SizedBox(height: 12),
-            _dealCard('🏪', 'Toko Voucher', 'HK$50 off at partner stores', 0, AppTheme.warmGold),
+            _dealCard('🏪', 'Toko Voucher', 'HK\$50 off at partner stores', 0, AppTheme.warmGold),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../core/theme.dart';
 
 class GroupFundScreen extends StatefulWidget {
   const GroupFundScreen({super.key});
@@ -31,7 +31,7 @@ class _GroupFundScreenState extends State<GroupFundScreen> {
                   child: LinearProgressIndicator(value: 0.72, minHeight: 12, backgroundColor: Colors.grey[200], valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFD4A017))),
                 ),
                 const SizedBox(height: 8),
-                const Text("HK$1,200 of HK$1,650 raised", style: TextStyle(fontWeight: FontWeight.w600)),
+                const Text("HK\$1,200 of HK\$1,650 raised", style: TextStyle(fontWeight: FontWeight.w600)),
                 const Text("12 sisters contributing", style: TextStyle(color: Colors.grey, fontSize: 12)),
               ],
             ),
@@ -39,10 +39,10 @@ class _GroupFundScreenState extends State<GroupFundScreen> {
           const SizedBox(height: 20),
           const Text("Contributors", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
-          _contributor("Maria", "🇵🇭", "HK$200", Colors.green),
-          _contributor("Ani", "🇮🇩", "HK$150", Colors.blue),
-          _contributor("Liza", "🇵🇭", "HK$100", AppTheme.coral),
-          _contributor("Sari", "🇮🇩", "HK$100", Colors.purple),
+          _contributor("Maria", "🇵🇭", "HK\$200", Colors.green),
+          _contributor("Ani", "🇮🇩", "HK\$150", Colors.blue),
+          _contributor("Liza", "🇵🇭", "HK\$100", AppTheme.coral),
+          _contributor("Sari", "🇮🇩", "HK\$100", Colors.purple),
           _contributor("You", "🇵🇭", "—", Colors.orange),
           const SizedBox(height: 20),
           SizedBox(

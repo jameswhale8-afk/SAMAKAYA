@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../../../../../core/theme.dart';
 
 class CityClockScreen extends StatelessWidget {
   const CityClockScreen({super.key});

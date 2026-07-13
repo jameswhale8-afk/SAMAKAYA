@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../../../../../core/theme.dart';
 
 class FirstAidScreen extends StatelessWidget {
   const FirstAidScreen({super.key});

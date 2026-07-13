@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../core/theme.dart';
 
 class SavingsTrackerScreen extends StatefulWidget {
   const SavingsTrackerScreen({super.key});
@@ -8,7 +8,7 @@ class SavingsTrackerScreen extends StatefulWidget {
 }
 
 class _SavingsTrackerScreenState extends State<SavingsTrackerScreen> {
-  String goal = "HK$50,000";
+  String goal = "HK\$50,000";
   double saved = 12500;
   double target = 50000;
 

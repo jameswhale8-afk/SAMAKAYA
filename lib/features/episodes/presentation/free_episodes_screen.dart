@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../../../../../core/theme.dart';
 
 class FreeEpisodesScreen extends StatelessWidget {
   const FreeEpisodesScreen({super.key});

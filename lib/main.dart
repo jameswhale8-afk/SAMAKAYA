@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/theme.dart';
 import 'features/auth/presentation/auth_screen.dart';
-import 'features/daily_claim/presentation/home_screen.dart';
+import 'modern_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +38,7 @@ class AuthGate extends StatelessWidget {
       stream: Supabase.instance.client.auth.onAuthStateChange,
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data!.session != null) {
-          return const HomeScreen();
+          return const ModernDashboard();
         }
         return const AuthScreen();
       },

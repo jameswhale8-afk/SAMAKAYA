@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/theme.dart';
+import '../../../../../../../core/theme.dart';
 
 class EmergencyScreen extends StatelessWidget {
   const EmergencyScreen({super.key});
