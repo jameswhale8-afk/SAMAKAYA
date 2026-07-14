@@ -53,17 +53,12 @@ class AboutUsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "We're Evangeline & Dewi — overseas workers for 10+ years and friends from Philippines and Indonesia.",
+                      "We're Evangeline & Dewi — overseas workers for 10+ years from Philippines and Indonesia. We volunteer on weekends and wanted something bigger to help.",
                       style: TextStyle(fontSize: 15, height: 1.6, color: Color(0xFF333333)),
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      "We both volunteer on weekends and wanted to do something bigger to help our sisters.",
-                      style: TextStyle(fontSize: 15, height: 1.6, color: Color(0xFF333333)),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      "By joining together, we can all help each other get deals, discounts, and savings that we cannot get alone.",
+                      "By joining KayaKita, together we can get deals, discounts, and savings they will never give us alone.",
                       style: TextStyle(fontSize: 15, height: 1.6, fontWeight: FontWeight.w600, color: Color(0xFF2D5A3D)),
                     ),
                   ],
@@ -94,7 +89,7 @@ class AboutUsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'KAYA KITA is free. Always. We make money from brands who want to offer you discounts — not from you. The bigger our community, the better deals we can negotiate.',
+                            'KAYA KITA is free always. As foreign overseas workers, we cannot earn money from KayaKita, we just want to help... The bigger we grow together the more we can help each other...',
                             style: TextStyle(fontSize: 13, height: 1.5, color: AppTheme.lightText),
                           ),
                         ],
