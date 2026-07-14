@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/theme.dart';
 import '../../../core/localization.dart';
+import '../../../core/province_data.dart';
+import '../../../core/local_db.dart';
 import '../../../modern_dashboard.dart';
 import '../../about/presentation/about_us_screen.dart';
 
@@ -16,6 +18,7 @@ class _AuthScreenState extends State<AuthScreen> {
   int _step = 0; // 0 = flags, 1 = sign-up, 2 = email form
   String _selectedLang = 'en';
   String _selectedLocation = 'HK';
+  String _selectedProvince = '';
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _loading = false;
@@ -217,6 +220,49 @@ class _AuthScreenState extends State<AuthScreen> {
                   }).toList(),
                 ),
                 const SizedBox(height: 24),
+                if (_selectedLocation.isNotEmpty) ...[
+                  Text(
+                    'Your province?',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppTheme.darkText),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    height: 140,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: ProvinceData.forCountry(_selectedLocation == 'HK' ? 'PH' : _selectedLocation == 'MO' ? 'PH' : _selectedLocation == 'SG' ? 'PH' : _selectedLocation == 'TW' ? 'PH' : 'ID').map((prov) {
+                        final selected = _selectedProvince == prov;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: GestureDetector(
+                            onTap: () => setState(() => _selectedProvince = prov),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: selected ? AppTheme.coral.withOpacity(0.1) : Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: selected ? AppTheme.coral : const Color(0xFFE8E8E8),
+                                  width: selected ? 1.5 : 1,
+                                ),
+                              ),
+                              child: Text(
+                                prov,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                                  color: selected ? AppTheme.coral : const Color(0xFF666666),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
                 Text(
                   'Your language?',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppTheme.darkText),
