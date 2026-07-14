@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/theme.dart';
 import '../../../core/localization.dart';
 import '../../../modern_dashboard.dart';
+import '../../about/presentation/about_us_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -264,7 +265,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => setState(() => _step = 1),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AboutUsScreen()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.sageGreen,
                       foregroundColor: Colors.white,
